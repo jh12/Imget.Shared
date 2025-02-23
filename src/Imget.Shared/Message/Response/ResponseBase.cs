@@ -1,4 +1,4 @@
-﻿namespace Imget.Shared.Messages.Rmq.Response;
+﻿namespace Imget.Shared.Message.Response;
 
 public abstract record ResponseBase
 (

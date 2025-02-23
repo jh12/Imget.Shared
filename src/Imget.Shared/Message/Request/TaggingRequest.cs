@@ -1,4 +1,4 @@
-﻿namespace Imget.Shared.Messages.Rmq.Request;
+﻿namespace Imget.Shared.Message.Request;
 
 public sealed record TaggingRequest
 (

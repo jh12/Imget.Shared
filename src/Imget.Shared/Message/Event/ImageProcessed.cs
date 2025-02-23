@@ -1,4 +1,4 @@
-﻿namespace Imget.Shared.Messages.Rmq.Event;
+﻿namespace Imget.Shared.Message.Event;
 
 public record ImageProcessed
 (

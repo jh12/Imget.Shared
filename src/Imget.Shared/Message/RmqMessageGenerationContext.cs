@@ -1,9 +1,9 @@
 ﻿using System.Text.Json.Serialization;
-using Imget.Shared.Messages.Rmq.Event;
-using Imget.Shared.Messages.Rmq.Request;
-using Imget.Shared.Messages.Rmq.Response;
+using Imget.Shared.Message.Event;
+using Imget.Shared.Message.Request;
+using Imget.Shared.Message.Response;
 
-namespace Imget.Shared.Messages.Rmq;
+namespace Imget.Shared.Message;
 
 // Events
 [JsonSerializable(typeof(ImageProcessed))]
