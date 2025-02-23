@@ -35,6 +35,6 @@ jobs:
     - name: Build
       run: dotnet build --configuration Release --no-restore --WarnAsError /p:Version=${{ steps.gitversion.outputs.NuGetVersionV2 }}
     - name: Pack nuget
-      run: dotnet pack --no-build -IncludeReferencedProjects --configuration Release /p:Version=${{ steps.gitversion.outputs.NuGetVersionV2 }}
+      run: dotnet pack --no-build --configuration Release /p:Version=${{ steps.gitversion.outputs.NuGetVersionV2 }}
     - name: Push nuget
       run: dotnet nuget push "src/Imget.Shared/bin/Release/*.nupkg" --api-key ${{ secrets.NUGETKEY }} --source "https://api.nuget.org/v3/index.json"
