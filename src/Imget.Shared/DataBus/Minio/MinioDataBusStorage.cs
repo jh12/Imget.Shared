@@ -27,10 +27,13 @@ public class MinioDataBusStorage : IDataBusStorage, IDataBusStorageManagement, I
         {
             await source.CopyToAsync(stream);
 
+            stream.Position = 0;
+
             var args = new PutObjectArgs()
                 .WithBucket(_bucketName)
                 .WithObject(id)
-                .WithStreamData(stream);
+                .WithStreamData(stream)
+                .WithObjectSize(stream.Length);
 
             await _client.PutObjectAsync(args);
         }
