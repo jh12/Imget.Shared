@@ -1,4 +1,4 @@
-using Imget.Shared.Configuration;
+﻿using Imget.Shared.Configuration;
 using Microsoft.IO;
 using Minio;
 using Minio.DataModel.Args;
@@ -11,6 +11,7 @@ public class MinioDataBusStorage : IDataBusStorage, IDataBusStorageManagement, I
     private readonly IMinioClient _client;
     private readonly string _bucketName;
     private readonly RecyclableMemoryStreamManager _memoryManager = new();
+    private string _prefix;
 
     public MinioDataBusStorage(MinioDataBusConfig busConfig)
     {
@@ -20,6 +21,7 @@ public class MinioDataBusStorage : IDataBusStorage, IDataBusStorageManagement, I
             .Build();
 
         _bucketName = busConfig.Bucket;
+        _prefix = busConfig.Prefix;
     }
 
     public async Task Save(string id, Stream source, Dictionary<string, string>? metadata = null)
@@ -32,7 +34,7 @@ public class MinioDataBusStorage : IDataBusStorage, IDataBusStorageManagement, I
 
             var args = new PutObjectArgs()
                 .WithBucket(_bucketName)
-                .WithObject(id)
+                .WithObject(GetFullPath(id))
                 .WithStreamData(stream)
                 .WithObjectSize(stream.Length);
 
@@ -46,7 +48,7 @@ public class MinioDataBusStorage : IDataBusStorage, IDataBusStorageManagement, I
 
         var args = new GetObjectArgs()
             .WithBucket(_bucketName)
-            .WithObject(id)
+            .WithObject(GetFullPath(id))
             .WithCallbackStream((stream) =>
             {
                 stream.CopyTo(resultStream);
@@ -61,7 +63,7 @@ public class MinioDataBusStorage : IDataBusStorage, IDataBusStorageManagement, I
     {
         var args = new StatObjectArgs()
             .WithBucket(_bucketName)
-            .WithObject(id);
+            .WithObject(GetFullPath(id));
 
         var objectStat = await _client.StatObjectAsync(args);
         var metadata = objectStat.MetaData.ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
@@ -75,7 +77,7 @@ public class MinioDataBusStorage : IDataBusStorage, IDataBusStorageManagement, I
     {
         var args = new RemoveObjectArgs()
             .WithBucket(_bucketName)
-            .WithObject(id);
+            .WithObject(GetFullPath(id));
 
         await _client.RemoveObjectAsync(args);
     }
@@ -83,6 +85,11 @@ public class MinioDataBusStorage : IDataBusStorage, IDataBusStorageManagement, I
     public IEnumerable<string> Query(TimeRange? readTime = null, TimeRange? saveTime = null)
     {
         throw new NotImplementedException();
+    }
+
+    private string GetFullPath(string id)
+    {
+        return $"{_prefix}/{id}";
     }
 
     public void Dispose()

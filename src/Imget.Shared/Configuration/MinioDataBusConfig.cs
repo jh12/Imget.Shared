@@ -5,5 +5,6 @@ public sealed record MinioDataBusConfig
     string Endpoint,
     string AccessKey,
     string SecretKey,
-    string Bucket
+    string Bucket,
+    string Prefix
 );
