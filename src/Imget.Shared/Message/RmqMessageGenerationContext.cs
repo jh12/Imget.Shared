@@ -7,6 +7,7 @@ namespace Imget.Shared.Message;
 
 // Events
 [JsonSerializable(typeof(ImageProcessed))]
+[JsonSerializable(typeof(ImageDiscovered))]
 
 // Requests
 [JsonSerializable(typeof(RequestBase))]
