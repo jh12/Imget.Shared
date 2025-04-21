@@ -1,4 +1,4 @@
-﻿using Imget.Shared.Configuration;
+using Imget.Shared.Configuration;
 using Microsoft.IO;
 using Minio;
 using Minio.DataModel.Args;
@@ -16,7 +16,8 @@ public class MinioDataBusStorage : IDataBusStorage, IDataBusStorageManagement, I
     {
         _client = new MinioClient()
             .WithEndpoint(busConfig.Endpoint)
-            .WithCredentials(busConfig.AccessKey, busConfig.SecretKey);
+            .WithCredentials(busConfig.AccessKey, busConfig.SecretKey)
+            .Build();
 
         _bucketName = busConfig.Bucket;
     }
