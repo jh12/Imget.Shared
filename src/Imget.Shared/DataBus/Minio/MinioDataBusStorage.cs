@@ -10,8 +10,8 @@ public class MinioDataBusStorage : IDataBusStorage, IDataBusStorageManagement, I
 {
     private readonly IMinioClient _client;
     private readonly string _bucketName;
-    private readonly RecyclableMemoryStreamManager _memoryManager = new();
     private string _prefix;
+    private readonly RecyclableMemoryStreamManager _memoryManager = new();
 
     public MinioDataBusStorage(MinioDataBusConfig busConfig)
     {
@@ -52,6 +52,7 @@ public class MinioDataBusStorage : IDataBusStorage, IDataBusStorageManagement, I
             .WithCallbackStream((stream) =>
             {
                 stream.CopyTo(resultStream);
+                resultStream.Position = 0;
             });
 
         await _client.GetObjectAsync(args);
