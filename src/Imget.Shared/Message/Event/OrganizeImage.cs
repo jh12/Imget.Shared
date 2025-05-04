@@ -2,5 +2,11 @@
 
 public class OrganizeImage : ImageEventBase
 {
+    public OrganizeImage()
+    {
+    }
 
+    public OrganizeImage(string sourceSystem, string imageId) : base(sourceSystem, imageId)
+    {
+    }
 }
