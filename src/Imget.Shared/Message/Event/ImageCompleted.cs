@@ -1,11 +1,10 @@
-﻿namespace Imget.Shared.Message.Event;
+﻿using System.Text.Json.Serialization;
+
+namespace Imget.Shared.Message.Event;
 
 public class ImageCompleted : ImageEventBase
 {
-    public ImageCompleted()
-    {
-    }
-
+    [JsonConstructor]
     public ImageCompleted(string sourceSystem, string imageId) : base(sourceSystem, imageId)
     {
     }

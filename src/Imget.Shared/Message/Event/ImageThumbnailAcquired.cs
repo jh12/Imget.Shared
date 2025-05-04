@@ -1,13 +1,12 @@
-﻿namespace Imget.Shared.Message.Event;
+﻿using System.Text.Json.Serialization;
+
+namespace Imget.Shared.Message.Event;
 
 public class ImageThumbnailAcquired : ImageEventBase
 {
-    public required string ThumbnailAttachment { get; set; }
+    public required string ThumbnailAttachment { get; init; }
 
-    public ImageThumbnailAcquired()
-    {
-    }
-
+    [JsonConstructor]
     public ImageThumbnailAcquired(string sourceSystem, string imageId, string thumbnailAttachment) : base(sourceSystem, imageId)
     {
         ThumbnailAttachment = thumbnailAttachment;

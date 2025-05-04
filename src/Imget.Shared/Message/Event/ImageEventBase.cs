@@ -2,12 +2,8 @@
 
 public abstract class ImageEventBase
 {
-    public required string SourceSystem { get; set; }
-    public required string ImageId { get; set; }
-
-    protected ImageEventBase()
-    {
-    }
+    public string SourceSystem { get; init; }
+    public string ImageId { get; init; }
 
     protected ImageEventBase(string sourceSystem, string imageId)
     {

@@ -1,11 +1,10 @@
-﻿namespace Imget.Shared.Message.Event;
+﻿using System.Text.Json.Serialization;
+
+namespace Imget.Shared.Message.Event;
 
 public class AcquireImageTags : ImageEventBase
 {
-    public AcquireImageTags()
-    {
-    }
-
+    [JsonConstructor]
     public AcquireImageTags(string sourceSystem, string imageId) : base(sourceSystem, imageId)
     {
     }

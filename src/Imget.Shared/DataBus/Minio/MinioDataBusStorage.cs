@@ -6,11 +6,11 @@ using Rebus.DataBus;
 
 namespace Imget.Shared.DataBus.Minio;
 
-public class MinioDataBusStorage : IDataBusStorage, IDataBusStorageManagement, IDisposable
+public sealed class MinioDataBusStorage : IDataBusStorage, IDataBusStorageManagement, IDisposable
 {
     private readonly IMinioClient _client;
     private readonly string _bucketName;
-    private string _prefix;
+    private readonly string _prefix;
     private readonly RecyclableMemoryStreamManager _memoryManager = new();
 
     public MinioDataBusStorage(MinioDataBusConfig busConfig)
@@ -26,20 +26,18 @@ public class MinioDataBusStorage : IDataBusStorage, IDataBusStorageManagement, I
 
     public async Task Save(string id, Stream source, Dictionary<string, string>? metadata = null)
     {
-        using (Stream stream = _memoryManager.GetStream())
-        {
-            await source.CopyToAsync(stream);
+        await using Stream stream = _memoryManager.GetStream();
+        await source.CopyToAsync(stream);
 
-            stream.Position = 0;
+        stream.Position = 0;
 
-            var args = new PutObjectArgs()
-                .WithBucket(_bucketName)
-                .WithObject(GetFullPath(id))
-                .WithStreamData(stream)
-                .WithObjectSize(stream.Length);
+        var args = new PutObjectArgs()
+            .WithBucket(_bucketName)
+            .WithObject(GetFullPath(id))
+            .WithStreamData(stream)
+            .WithObjectSize(stream.Length);
 
-            await _client.PutObjectAsync(args);
-        }
+        await _client.PutObjectAsync(args);
     }
 
     public async Task<Stream> Read(string id)
